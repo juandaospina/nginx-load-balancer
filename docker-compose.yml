@@ -1,5 +1,25 @@
 version: '3'
 services:
+  app-server-1:
+    build:
+      context: ./app-server-1
+      dockerfile: Dockerfile
+    container_name: app-server-1
+    ports:
+      - 8000:8000
+    networks:
+      - nginx-balancer
+
+  app-server-2:
+    build:
+      context: ./app-server-2
+      dockerfile: Dockerfile
+    container_name: app-server-2
+    ports:
+      - 8001:8001
+    networks:
+      - nginx-balancer
+
   nginx:
     container_name: nginx
     build:
@@ -8,22 +28,11 @@ services:
     ports:
       - 80:80
     depends_on:
-      - backend1
-      - backend2
+      - app-server-1
+      - app-server-2
+    networks:
+      - nginx-balancer
 
-
-  backend1:
-    build:
-      context: ./api_1
-      dockerfile: Dockerfile
-    container_name: backend1
-    expose:
-      - "8000"
-
-  backend2:
-    build:
-      context: ./api_2
-      dockerfile: Dockerfile
-    container_name: backend2
-    expose:
-      - "8001"
+networks:
+  nginx-balancer:
+    driver: bridge
