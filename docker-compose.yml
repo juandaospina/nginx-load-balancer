@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile
     container_name: app-server-1
     ports:
-      - 8000:8000
+      - "8001:8000"
     networks:
-      - nginx-balancer
+      - loadbalancer
 
   app-server-2:
     build:
@@ -16,9 +16,9 @@ services:
       dockerfile: Dockerfile
     container_name: app-server-2
     ports:
-      - 8001:8001
+      - "8002:8000"
     networks:
-      - nginx-balancer
+      - loadbalancer
 
   nginx:
     container_name: nginx
@@ -26,13 +26,13 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - app-server-1
       - app-server-2
     networks:
-      - nginx-balancer
+      - loadbalancer
 
 networks:
-  nginx-balancer:
+  loadbalancer:
     driver: bridge
