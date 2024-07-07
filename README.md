@@ -24,7 +24,11 @@ To install and local deployment the nginx load balancer follow this steps:
     ```bash
     cd nginx-load-balancer
     ```
-3. Run docker compose
+3. Create de `loadbalancer` network with:
+    ```bash
+    docker network create loadbalancer
+    ```
+4. Run docker compose
     ```bash
     docker-compose up -d --build
     ```
